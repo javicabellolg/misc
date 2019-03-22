@@ -31,7 +31,7 @@ contract LotteryFact is Ownable{
         lottoHist[lastLottery] = new Lottery (minimumNumberOfBets, userContractAddress);
     }
 
-    function newLottery() external onlyOwner{
+    function newLottery() public onlyOwner{
         setInterfaceLottery(lottoHist[lastLottery]);
         require (LottoInterf.checkStatus() == false, "La lotería anterior aún está en juego, ejecútela antes de iniciar una nueva");
         //killPrev();
@@ -72,6 +72,7 @@ contract Lottery is Ownable{
 
     event lotteryExecute (string Msg, address winner);
     event Message (string Msg, uint value);
+    event userNotRegistered (string Msg);
 
     mapping (address => bool) public accountAccept;
 
@@ -88,6 +89,10 @@ contract Lottery is Ownable{
     }
 
     modifier onlyUsers(address _address){
+	if (userInterf.consultUser(_address) == false)
+	{
+		emit userNotRegistered ("El usuario no está registrado. Por favor, proceda a registrarse");
+	}
 	require(userInterf.consultUser(_address) == true, "El usuario no está registrado. Por favor, proceda a registrarse");
 	_;
     }

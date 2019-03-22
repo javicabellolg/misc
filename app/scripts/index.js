@@ -14,8 +14,8 @@ const LotteryFact = TruffleContract(LotteryFactArtifact)
 const User = TruffleContract(UserArtifact)
 const Lottery = TruffleContract(LotteryArtifact)
 
-let LotteryFact_address = "0xd91def713797175b49edb6f3c2997ad1dc811b8a"
-let User_address = "0x363ba553ec904ebbd13b85f0ba535fc83d53cc82"
+let LotteryFact_address = "0x26674c2508c7dfa2d681ccbd0f9b68a9a2c0f2cb"
+let User_address = "0xf0f7221e817283abd9481a94b476fec85d909cab"
 
 let accounts
 let account
@@ -141,6 +141,12 @@ const App = {
                 alert(res.args.Msg+web3.fromWei(res.args.value,"ether")+" ether")
               }
             })
+	    instanceLotto.userNotRegistered().watch(function(err, res) {
+              if (!err){
+                //console.log(res.args.client);
+                alert(res.args.Msg)
+              }
+            })
             console.log (amountPago)
             var amountApuesta = web3.toWei(amountPago)
             instanceLotto.enter({from: account, value: amountApuesta}).then(function(){
@@ -159,7 +165,7 @@ const App = {
     this.setStatus('Initiating transaction... (please wait)')
 
     let factory 
-
+    console.log(LotteryFact_address)
     LotteryFact.at(LotteryFact_address).then(function (instance) {
       factory = instance
       console.log(instance.address)
@@ -169,7 +175,7 @@ const App = {
           alert(res.args.msg+res.args.hist)
         }
       })
-      instance.newLottery().then(function(){
+      instance.newLottery({from: account}).then(function(){
         console.log("Lotería creada")
       })    
     })
