@@ -145,12 +145,35 @@ const App = {
             var amountApuesta = web3.toWei(amountPago)
             instanceLotto.enter({from: account, value: amountApuesta}).then(function(){
               console.log ("Pago realizado correctamente")
-          })
-		})
-	})
+            })
+		      })
+	      })
     })    
-  }
+  },
 
+  newLottery: function () {
+    const self = this
+
+    LotteryFact.setProvider(web3.currentProvider)
+
+    this.setStatus('Initiating transaction... (please wait)')
+
+    let factory 
+
+    LotteryFact.at(LotteryFact_address).then(function (instance) {
+      factory = instance
+      console.log(instance.address)
+      factory.newLotteryEvent().watch(function(err, res) {
+        if (!err){
+          //console.log(res.args.client);
+          alert(res.args.msg+res.args.hist)
+        }
+      })
+      instance.newLottery().then(function(){
+        console.log("Lotería creada")
+      })    
+    })
+  }
 }
 
 window.App = App
