@@ -14,8 +14,8 @@ const LotteryFact = TruffleContract(LotteryFactArtifact)
 const User = TruffleContract(UserArtifact)
 const Lottery = TruffleContract(LotteryArtifact)
 
-let LotteryFact_address = "0x26674c2508c7dfa2d681ccbd0f9b68a9a2c0f2cb"
-let User_address = "0xf0f7221e817283abd9481a94b476fec85d909cab"
+let LotteryFact_address = "0x90bfa03b28b1e9fca37c1768fc3c6a58dd94672a"
+let User_address = "0x404477d94e3b74350f6bebacb708424eb228fb99"
 
 let accounts
 let account
@@ -134,7 +134,8 @@ const App = {
       console.log(instance)
         console.log(factory.lottoHist(idLotto))
         factory.lottoHist(idLotto).then(function (address) {
-		      Lottery.at(address).then(function(instanceLotto){
+		console.log(address)      
+		Lottery.at(address).then(function(instanceLotto){
             instanceLotto.Message().watch(function(err, res) {
               if (!err){
                 //console.log(res.args.client);
@@ -155,6 +156,24 @@ const App = {
 		      })
 	      })
     })    
+  },
+
+  execute: function () {
+    const self = this
+
+    LotteryFact.setProvider(web3.currentProvider)
+
+    this.setStatus('Initiating transaction... (please wait)')
+
+    let factory
+    console.log(LotteryFact_address)
+    LotteryFact.at(LotteryFact_address).then(function (instance) {
+      factory = instance
+      console.log(instance.address)
+      instance.execute({from: account}).then(function(){
+        console.log("Lotería ejecutada")
+      })
+    })
   },
 
   newLottery: function () {

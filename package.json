@@ -45,6 +45,7 @@
   "dependencies": {
     "dotenv": "^7.0.0",
     "openzeppelin-solidity": "2.0.0",
-    "solc": "^0.5.3"
+    "solc": "^0.5.3",
+    "truffle-hdwallet-provider": "^1.0.5"
   }
 }

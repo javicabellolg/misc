@@ -28,7 +28,7 @@ contract LotteryFact is Ownable{
     constructor(address _userContract){
         minimumNumberOfBets = 5;
 	userContractAddress = _userContract;
-        lottoHist[lastLottery] = new Lottery (minimumNumberOfBets, userContractAddress);
+        lottoHist[lastLottery] = new Lottery (minimumNumberOfBets, userContractAddress, msg.sender);
     }
 
     function newLottery() public onlyOwner{
@@ -36,7 +36,7 @@ contract LotteryFact is Ownable{
         require (LottoInterf.checkStatus() == false, "La lotería anterior aún está en juego, ejecútela antes de iniciar una nueva");
         //killPrev();
         lastLottery++;
-        lottoHist[lastLottery] = new Lottery (minimumNumberOfBets, userContractAddress);
+        lottoHist[lastLottery] = new Lottery (minimumNumberOfBets, userContractAddress, msg.sender);
         setInterfaceLottery(lottoHist[lastLottery]);
 	emit newLotteryEvent ("Se ha creado una nueva lotería con id:", lastLottery);
     }
@@ -76,9 +76,10 @@ contract Lottery is Ownable{
 
     mapping (address => bool) public accountAccept;
 
-    constructor (uint16 _number, address _userContract){
+    constructor (uint16 _number, address _userContract, address _factoryOwner){
         minimumNumberOfBets = _number;
 	addMember(msg.sender);
+	addMember(_factoryOwner);
 	setUserLottery(_userContract);
 	isStopped = false;
     }
@@ -122,8 +123,7 @@ contract Lottery is Ownable{
         return uint(keccak256(block.difficulty, now, players));
     }
 
-    function pickWinner() internal onlyAccept(msg.sender){
-        require(players.length > minimumNumberOfBets);
+    function pickWinner() public onlyAccept(msg.sender){
         address winner = players[random() % players.length];
         winner.transfer(this.balance);
         emit lotteryExecute ("Hay nuevo Ganador!!", winner);
