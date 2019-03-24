@@ -61,7 +61,10 @@ contract LotteryFact is Ownable{
 }
 
 contract Lottery is Ownable{
+    using SafeMath for uint;
+
     uint16 minimumNumberOfBets;
+    uint initialBalance;
 
     address public manager;
     address[] public players;
@@ -123,10 +126,37 @@ contract Lottery is Ownable{
         return uint(keccak256(block.difficulty, now, players));
     }
 
+    function random2() private view returns (uint){
+        return uint8(uint(keccak256(block.difficulty, now, players))%251);
+    }
+
+    function random3() private view returns (uint){
+        return uint8(uint16(keccak256(block.difficulty, now, players))%14);
+    }
+
     function pickWinner() public onlyAccept(msg.sender){
-        address winner = players[random() % players.length];
-        winner.transfer(this.balance);
-        emit lotteryExecute ("Hay nuevo Ganador!!", winner);
+        initialBalance = this.balance;
+	address winner1 = players[random() % players.length];
+        uint price1 = initialBalance.mul(50).div(100);
+	winner1.transfer(price1);
+	emit lotteryExecute ("Ganador del primer premio!!", winner1);
+	pickWinner2();
+    }
+
+    function pickWinner2() internal {
+	address winner2 = players[random2() % players.length.sub(1)];
+	uint price2 = initialBalance.mul(30).div(100);
+	winner2.transfer(price2);
+	emit lotteryExecute ("Ganador del segundo premio!!", winner2);
+    	pickWinner3();
+    }
+
+    function pickWinner3() internal {
+	address winner3 = players[random3() % players.length.sub(2)];
+	uint price3 = initialBalance.mul(20).div(100);
+	winner3.transfer(price3);
+	emit lotteryExecute ("Ganador del tercer premio!!", winner3);
+	
         players = new address[](0);
     }
 
