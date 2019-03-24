@@ -1654,13 +1654,13 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {
-    "1553384815821": {
+    "4": {
       "events": {},
       "links": {},
-      "address": "0xffe8d6d7be9328e099cecc7fcc20f1ff349ee814",
-      "transactionHash": "0x9f505c51cd5222c85a355e4c21f5e28b734101a00ce1b49c67cc81c31532beaf"
+      "address": "0xc851ccf5f8319777fa7bd66426ae4174f20edde6",
+      "transactionHash": "0x5a5f394bdf6ed5c002d5aa11e7f9b2d02919c0f26ca69e23b24c3e4a32fa4291"
     }
   },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2019-03-24T00:44:49.856Z"
+  "updatedAt": "2019-03-24T22:09:46.965Z"
 }

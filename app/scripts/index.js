@@ -14,8 +14,8 @@ const LotteryFact = TruffleContract(LotteryFactArtifact)
 const User = TruffleContract(UserArtifact)
 const Lottery = TruffleContract(LotteryArtifact)
 
-let LotteryFact_address = "0x90bfa03b28b1e9fca37c1768fc3c6a58dd94672a"
-let User_address = "0x404477d94e3b74350f6bebacb708424eb228fb99"
+let LotteryFact_address = "0xf551280e4a00f53a5a43c5b76219fefa48a01e6f"
+let User_address = "0xc851ccf5f8319777fa7bd66426ae4174f20edde6"
 
 let accounts
 let account
